@@ -69,7 +69,7 @@ Chip core, the out-of-order BOOM core, the systolic array Gemmini, and many othe
 Thankfully, Chipyard has some great documentation, which can be found [here](https://chipyard.readthedocs.io/en/latest/).
 You can find most of these in the `chipyard/generators/` directory. All of these modules are built as generators (a
 core driving point of using Chisel), which means that each piece is parameterized and can be fit together with some 
-of the functionality in Rocket Chip (check out TileLinnk and Diplomacy references in the Chipyard documentation).
+of the functionality in Rocket Chip (check out TileLink and Diplomacy references in the Chipyard documentation).
 You can find the Chipyard specific code and its configs in `chipyard/generators/chipyard/src/main/scala/config/`.
 You can look at examples of how your own Chisel modules or verilog black-box modules can be integrated into a 
 Rocket Chip-based SoC in `chipyard/generators/chipyard/src/main/scala/example/`. Generally, an accelerator block
@@ -87,9 +87,9 @@ generator in Chisel, and unit test it using ChiselTesters. You can then write in
 program) which can then be simulated with your Rocket Chip and "accelerator" block together to test end-to-end system
 functionality. Chipyard provides the infrastructure to help you do this for both VCS (Synopsys) and Verilator (open-source).
 In this lab, we are just focusing on a Rocket core in isolation, so we will run some assembly tests on a Rocket config.
-You can edit the configs being use in `chipyard/variables.mk` or through overriding the make invocation with `CONFIG=YourConfig`.
+You can edit the configs being used in `chipyard/variables.mk` or through overriding the make invocation with `CONFIG=YourConfig`.
 In this case, we will work with a Rocket config that is a basic Rocket core (includes L1 data and instruction caches) with an
-on-chip scratchpad memory. Go to the `chipyard/sims/vcs` directory and run:
+on-chip scratchpad memory. Go to the `chipyard/sims/vcs/` directory and run:
 
 ```
 # build the "scratchpad"
