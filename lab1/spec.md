@@ -49,18 +49,25 @@ and place-and-route it in ASAP7 using the Hammer flow.
 </p>
 
 ## Getting Started
-First, we will need to setup of Chipyard workspace. For this lab, please work on the `eda-[1-8]@eecs.berkeley.edu` 
-machines and in the `/scratch/` directory on the machine. This lab will likely generate too much data for it
-to fit in your home directory. Run the following commands to set up your workspace:
+First, we will need to set up our Chipyard workspace. To begin, create an instructional account at 
+[https://acropolis.cs.berkeley.edu/~account/webacct/](https://acropolis.cs.berkeley.edu/~account/webacct/). 
+After loggin in via "Login using your Berkeley CalNet ID", you should find that you can create an account for
+the eecs251b group. All of our work will occur on the instructional servers on the `eda-[1-8]@eecs.berkeley.edu` 
+machines. You may connect to these machine directly via SSH with X11 Forwarding or via [X2Go](https://wiki.x2go.org/doku.php/download:start).
+
+For this course, it may be wise to work in the `/scratch` directory on the lab machine. Create a folder for yourself
+there, and make sure you login to the same server each time. Chipyard may generate too much data for it to fit in
+your home directory.
+
+run the commands below in ***Bash terminal only***. This may take about 10 minutes.
 
 ```
-cd /scratch/<my-username>
-git clone ~ee251b/spring22-labs/chipyard
+mkdir /scratch/<your-username>
+cd /scratch/<your-username>
+git clone /home/ff/eecs251b/sp22-workspace/tools/chipyard
 cd chipyard
 ./scripts/init-submodules-no-riscv-tools.sh
-cd vlsi
-git submodule update --init hammer-cadence-plugins
-source sourceme.sh
+./scripts/init-vlsi.sh asap7
 ```
 
 You may have noticed while initializing your Chipyard repo that there are many submodules. Chipyard is built
@@ -71,17 +78,25 @@ You can find most of these in the `chipyard/generators/` directory. All of these
 core driving point of using Chisel), which means that each piece is parameterized and can be fit together with some 
 of the functionality in Rocket Chip (check out TileLink and Diplomacy references in the Chipyard documentation).
 You can find the Chipyard specific code and its configs in `chipyard/generators/chipyard/src/main/scala/config/`.
-You can look at examples of how your own Chisel modules or verilog black-box modules can be integrated into a 
+You can look at examples of how your own Chisel modules or Verilog black-box modules can be integrated into a 
 Rocket Chip-based SoC in `chipyard/generators/chipyard/src/main/scala/example/`. Generally, an accelerator block
 is connected to the Rocket core with a memory-mapped interface over the system bus. This allows the core to 
 configure and read from the block. Again, there is far too much to discuss fully here, but you can really put
 together a system very quickly using the infrastructure of Chipyard.
 
+
+Before continuiing, this environment setup script must be run from the `chipyard` directory every time you use
+Chipyard in a new terminal session.
+
+```
+source scripts/inst-env.sh
+```
+
 ## Chipyard Simulation and Design Benchmarking
 
 ### RTL Simulation
 
-Chipyard Chisel-based design looks something like a Rocket core connected to some kind of "accelerator"
+In general, Chipyard Chisel-based designs look something like a Rocket core connected to some kind of "accelerator"
 (e.g. a DSP block like an FFT module). When building something like that, you would typically build your "accelerator"
 generator in Chisel, and unit test it using ChiselTesters. You can then write integration tests (e.g. a baremetal C
 program) which can then be simulated with your Rocket Chip and "accelerator" block together to test end-to-end system
@@ -92,21 +107,20 @@ In this case, we will work with a Rocket config that is a basic Rocket core (inc
 on-chip scratchpad memory. Go to the `chipyard/sims/vcs/` directory and run:
 
 ```
-# build the "scratchpad"
-make SUB_PROJECT=scratchpad
-# run the BINARY on the simulator and log instructions to a file
-# output for this make command is located in the output/ directory
-make SUB_PROJECT=scratchpad BINARY=$RISCV/riscv64-unknown-elf/share/riscv-tests/isa/rv64ui-p-simple run-binary
+cd sims/vcs
+make
+make BINARY=$RISCV/riscv64-unknown-elf/share/riscv-tests/isa/rv64ui-p-simple run-binary
 ```
 
 The first command will elaborate the design and create the Verilog. This is done by converting the Chisel code, embedded
 in Scala, into a FIRRTL intermediate representation which is then run through the FIRRTL compiler to generate Verilog.
 Next it will run VCS to build a simulator out of the generated Verilog that can run RISC-V binaries. The second command 
 will run the test specified by BINARY and output results in the `output/` directory. You can look at the suite of different tests
-in the directories specified in the command we ran.
+in the directories specified in the command we ran. The default target uses the scala class RocketConfig to define the parameters 
+of the generator. To get a list of all common make variables and targets for simulation run `make help`.
 
-***Q: In your lab report, include a screenshot of the last 10 lines of the output of the assembly test you ran. It should include
-the *** PASSED *** flag. You may stop the simulations part way through if you don't want to run all of the assembly tests.***
+***Q1: In your lab report, include a screenshot of the last 10 lines of the `.out` file generated by the assembly test you ran. 
+It should include the *** PASSED *** flag.***
 
 ### Firesim
 
@@ -116,98 +130,81 @@ than software simulation. A key point of FireSim is that it is cycle-accurate si
 latency by transforming parts of your design. Emulating your design normally on an FPGA does not model these system-level aspects 
 that your actual chip will run with. Using FireSim is outside the scope of this lab, but it is worth looking in to.
 
-## VLSI Flow
+## Design Elaboration and SRAM Mapping
 
-### Design Elaboration
-
-The Hammer flow used in EECS 151/251A is integrated into Chipyard. A project setup similar to the ones we have previously 
-used is located in `chipyard/vlsi/`. In this directory, run
-
-```
-make srams
-```
-
-This will elaborate our Rocket design similarly to the `sims/` directory, but this time, the required hard SRAM macros will be generated
-by the macrocompiler in the `barstools` submodule. This macrocompiler step is required because the memories available in the technology
-will not match the ones required by your design exactly. This step gives you the list of technolgy-available SRAMs that map to your design
-and fits the connections into the correct parts of your RTL. The SRAMs available in ASAP7 can be found in `hammer/src/hammer-vlsi/technology/asap7/`.
-
-We are using a slightly different config from the one we simulated, with smaller caches and a smaller scratchpad for the purpose of simplifying 
-the physical design for this lab. The elaboration results can be found in `vlsi/generated-src/`. There are many files that are generated in this
-folder that relate to FIRRTL compilation of the Chisel design and of course the final Verilog output files. All of the file names are pre-fixed
-with the name of the config used. In the `generated-src/` directory (all prefixed with `chipyard.TestHarness.SmallScratchpadRocketConfig`), `top.mems.conf`
-describes the parameter of the memories in your design and `top.mems.v` shows the actual Verilog instantiations of the indiviual SRAM blocks used that
-correspond to the total memories in `top.mems.conf` (the names of the memory blocks will match the Verilog module names).
-
-***Q: What is the breakdown of ASAP7 SRAM blocks for each of the memories in the design? (this can be found by looking at the files described above.)***
-
-`generated-src/` also includes your elaborated Verilog in top.v, files related to your system's device tree, and even a `graphml` file that visualizes
-the diplomacy graph of the different components in your system (can be viewed with an online viewer for instance).
-
-### Synthesis
-
-Now that the design is elaborated, we can leverage the Hammer infrastructure we have used this semester to physically build our system in much the same
-way before. The Hammer entry point runs through `example-vlsi` (setup to easily include additional custom Hammer hooks) and our Hammer config is in
-`example.yml`. Here you can see we have again constrained our top-level clock to be 50 MHz. It is pretty straightforward to close timing for Rocket Chip
-in the 100's of MHz with limited physical design input using Hammer out-of-the-box, but we are running it at this lower frequency to ease our design
-constrains. Run the following (again uses the auto-generated Make fragment in `build/`).
+In the previous section, we elaborated the design for just a functional simulation in VCS. To begin the physical design (VLSI)
+flow targeting a specific technology, we need to elaborate our design a bit differently. The physical design flow we will use
+throughout the semester is integrated into Chipyard in the `vlsi/` folder. After navigating to the base chipyard directory, we can
+set up our VLSI back-end by running the following commands:
 
 ```
-make syn
+cd vlsi/
+make srams INPUT_CONFS=lab1/lab1.yml
 ```
 
-This step should take up to about 1 hour. If you are ssh'd directly into the machine (not using X2go, etc.), you should use a utility like `tmux` to make
-sure that you don't lose your run if you lose your connection or log off. When it completes, you can look at the results just like before in `syn-rundir/reports/`
-to confirm your design passed timing.
+This will be a multi-step process. First, it will elaborate our Rocket design similarly to the `sims/` directory, but this time,
+abstract memory constructs in the source Chisel are translated into hard SRAM macros using the MacroCompiler in the `barstools`
+submodule. This MacroCompiler step is required because the memories available in the technology will not exactly match the ones 
+required by your design. This step gives you the list of technology-available SRAMS that map to your design and fits the connections 
+into the correct parts of your RTL.
 
-### Floorplanning
+Next, the chosen SRAMs from the technology library are inserted into the elaborated Verilog files with the proper connections.
+The elaboration results can be found in `vlsi/generated-src/`.
 
-Floorplanning is a key step to all designs and will have a huge effect on your design's QoR. In this case, we must place the SRAM macros for our Rocket
-core's L1 caches and scratchpad. `example.yml` has an example of SRAM placement in Hammer under `vlsi.inputs.placement_constraints`. You can see that these
-macros match the ones we saw in the `mems.v` file we looked at earlier. In these Hammer constraints, you can see that the lower-left hand corner placment is
-specified (in microns) as well as the orientation (see `hammer/src/hammer-vlsi/defaults.yml` for documentation on all placement options). A common
-design pattern when placing SRAMs is to "butterfly" them such that the different macro blocks abut each other on multiple sides, while the side with its
-pins is exposed so that is can be routed to.
+There are many files that are generated in this folder that relate to FIRRTL compilation of the Chisel design and of course the
+final Verilog output files. All of the file names are pre-fixed with the name of the config used. For example, in the 
+`generated-src/chipyard.TestHarness.RocketConfig` directory, many files are prefixed with `chipyard.TestHarness.Rocketconfig`.
 
-Hammer provides a floorplan visualization tool to give you a very quick preview of your floorplan. The visualization tool is called in the `visualize_floorplan`
-hook in `example-vlsi`. You can run the floorplan tool with `make par` and then kill it with `ctrl+c` after the first step runs. The visualization will be 
-generated at `par-rundir/all.svg`, which can be opened using `display` or a browser.
+The file `top.mems.conf` describes the parameters of the memories in your design and `top.mems.v` shows the actual Verilog
+instantiations of the individual SRAM blocks used (the names of the memory blocks will match the Verilog module names).
 
-***Q: Include a screenshot of the Hammer generated floorplan visualization output.***
 
-The floorplan provided here is fairly random, but you may play around with placement and visualize your changes using this same process. We recommend that
-you try playing around with the floorplan and attempt to see changes in area, QoR, etc. if you have time, since you can kick off jobs and have them run with
-little supervision.
+***Q2: What is the breakdown of SRAM blocks for each of the memories in the design? This can be found by looking at the files described above.***
 
-As noted in EECS 151/251A, if you edit an input yml/json file, the Hammer Make include file will detect this and re-run the flow. If you want to edit a 
-setting without re-running the whole flow, you can run `make redo-STEP HAMMER_REDO_ARGS='-p floorplan.yml'`. This will break the dependencies and just run
-that step, and additional arguments can be added to the call with the `HAMMER_REDO_ARGS` flag. New input files can add additional Hammer key flags, or it
-can override keys in the originally included files. Just make sure you are keeping track of what flags you are using when using the redo steps.
+***Q3: Now, take a look at the `top.anno.json` file This contains a listing of all the targets (i.e. instances) that need to be
+transformed in specific ways by FIRRTL in the Chisel to Verilog elaboration. In your report, show one of the SRAM annotations
+and describe the correspondence with what was generated from Q2.***
 
-### Place and Route (P&R)
+`generated-src/` also includes your elaborated Verilog in top.v, files related to your system's devoce tree, and even a `graphml`
+file that visualizes the diplomacy graph of the different components in your system (can be viewed with an [online viewer](https://www.yworks.com/yed-live/).
 
-Now that we have synthesized the design and created a floorplan, we can run through P&R just like before. Note that you can open up the design in Innovus
-by restoring one of the generated Innovus databases in `par-rundir` after the floorplan step has run to confirm your floorplan made it into the design 
-(switch to floorplan view as opposed to physical view).
+Finally, Hammer is executed using the information from the `top.mems.conf` file to gather all of the collateral needed for physical design
+with SRAMs. The outputs of Hammer are in the `build/chipyard.TestHarness.RocketConfig-ChipTop` directory. Note that the first time Hammer
+invokes the ASAP7 PDK, it extracts the PDK tarball and hacks it into the `tech-asap7-cache/` directory, so it may take a few minutes.
 
-```
-make par
-```
+In this build directory, take a look at the `sram-generator-output.json` file. You will find a structure under the key `vlsi.technology.extra_libraries`.
+This structure is needed to provide all of the files needed for a physical design flow with IP blocks such as SRAM macros.
 
-You can open up the final design in Innovus using `par-rundir/generated-scripts/open_chip` just like in EECS 151/251A. Note that we are using "express"
-level effort (Hammer key: `par.innovus.design_flow_effort: "expres"`) for the sake of runtime.
+***Q4: Choose any library in the list of extra_libraries, and explore the files listed. In your lab report, concisely describe what
+each of the files are for and where in a physical design flow they will be used. We will dig deeper into these in an upcoming lab.***
 
-***Q: Include a picture of your design in Innovus with M8 and M9 turned off.***
+## Exploring the Chipyard Infrastructure
 
-***Q: How much setup timing slack is there in the design?***
+Now, let's delve deeper into how Chipyard is structure by having you go on a scavenger hunt. You may also cross-reference the
+[Chipyard documentation](https://chipyard.readthedocs.io/en/latest/) to guide you.
 
-***Q: Include a picture of the clock tree debugger for your design from Innovus and comment on the balancing.***
+***Q5: In section 3.1, we typed `make` in `sims/vcs` and it elaborated a default Rocket Chip configuration. In your lab report,
+copy the section of the file that selects this default subproject and config.***
 
-## Rest of the VLSI Flow
+***Q6: There are many different Rocket-based SoC configs that are shipped with Chipyard. In your lab report, point to the file
+that contains all the avialable Rocket-based configs and list which configs are available. Then, show that `MbusScratchpadRocketConfig`
+(this replaces an off-chip memory port with a scratchpad memory) passes the same binary test that we ran in Section 3.1.***
 
-Running DRC and LVS is not required for this lab, but you can run them through Hammer just like before. The placement of macros like SRAMs can cause
-considerable numbers of DRC and LVS errors if placed incorrectly and can cause considerable congestion if placed non-optimally. The floorplan visualization
-tools in Hammer can help you root out these problems early in your design process.
+***Q7: By inspecting the available configs, we can try to construct our own custom one. In your lab report, write the config (in the form
+ `class <Lab1CustomConfig> extends Config(...)`) that would instantiate the following frankenstein SoC:***
+
+- 2 big Rocket cores and 2 large BOOM cores
+- 1 each of Hwacha and Gemmini accelerators
+- No L2 cache
+- No port for external backing memory
+
+***Q8: It may be useful for your projects to see how Verilog can be integrated into a Chisel system. The GCD MMIO peripheral is a good 
+example of this. In your lab report, describe which file allows us to choose whether to use a Verilog or Chisel version of the GCD,
+as well as the path to the Verilog file.***
+
+***Q9: To start a new porject using Chisel in Chipyard, you will need to do a few things. In your lab report, outline where you will put
+your new project code and its directory structure (following convention), and which files you need to change in order to be able to compile 
+code from your new project.***
 
 ## Conclusion
 
@@ -218,6 +215,7 @@ and benchmark its performance, to how you physically implement it, are meant to 
 increased designer productivity and faster design iteration. We just scratched the surface in this lab, but there are always more interesting features
 being integrated into Chipyard. We recommend that you continue to explore what you can build with Chipyard given this introduction!
 
+
 ## Acknowledgements
-Most of the thanks goes to Daniel Grubb who wrote this lab for Spring 2020's EE241B.
-Thank you also to Alon Amid and the whole Chipyard dev team for figures and documentation on Chipyard.
+Thank you to Daniel Grubb and Harrison Liew for authoring this lab, and thank you to Alon Amid and the entire Chipyard dev team for figures and documentation
+on Chipyard.
