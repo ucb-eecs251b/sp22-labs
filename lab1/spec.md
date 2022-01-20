@@ -67,7 +67,7 @@ run the commands below in ***Bash terminal only***. This may take about 10 minut
 ```
 mkdir /scratch/<your-username>
 cd /scratch/<your-username>
-git clone /home/ff/eecs251b/sp22-workspace/tools/chipyard
+git clone /home/ff/eecs251b/sp22-workspace/chipyard
 cd chipyard
 ./scripts/init-submodules-no-riscv-tools.sh
 ./scripts/init-vlsi.sh asap7
