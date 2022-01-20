@@ -27,7 +27,7 @@ Chipyard is an integrated design, simulation, and implementation framework for o
 developed here at UC Berkeley. Chipyard is open-sourced online and is based on the Chisel and FIRRTL hardware 
 description libraries, as well as the Rocket Chip SoC generation ecosystem. Chipyard brings together much of
 the work on hardware design methodology from Berkeley over the last decade, as well as other useful tools, 
-into a single repository that gaurentees version compatibility between the projects it submodules.
+into a single repository that gaurantees version compatibility between the projects it submodules.
 
 A designer can use Chipyard to build, test, and tapeout (manufacture) a RISC-V-based SoC. This includes RTL
 development integrated with Rocket Chip, cloud FPGA-accelerated simulation with FireSim, and physical design
@@ -38,8 +38,11 @@ to Chisel can be foud in the Chisel bootcamp: [https://github.com/freechipsproje
 Detailed documentation of Chisel functions can be found in [https://www.chisel-lang.org/api/SNAPSHOT/index.html](https://www.chisel-lang.org/api/SNAPSHOT/index.html).
 
 There is a lot in Chipyard so we will only be able to explore a part of it, but hopefully you will get a brief
-sense of its capabilities. We will simulate a Rocket Chip-based design at the RTL level, and then synthesize
-and place-and-route it in ASAP7 using the Hammer flow.
+sense of its capabilities. Chipyard has great [documentation](https://chipyard.readthedocs.io/en/latest/) and will
+be useful to reference throughout the semester. In this lab, you will simulate a Rocket Chip-based design at the 
+RTL level, and then elaborate it with SRAMS from the ASAP7 free process design kit (PDK) using part of the 
+Hammer back-end flow. Then, you will be challenged to find out how Chipyard is structured and learn how to modify
+things in preparation for your own project.
 
 <p align="center">
  <img src="figs/chipyard-components.PNG" alt="train_perf_fig"/>
