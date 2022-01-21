@@ -55,7 +55,7 @@ things in preparation for your own project.
 First, we will need to set up our Chipyard workspace. To begin, create an instructional account at 
 [https://acropolis.cs.berkeley.edu/~account/webacct/](https://acropolis.cs.berkeley.edu/~account/webacct/). 
 After loggin in via "Login using your Berkeley CalNet ID", you should find that you can create an account for
-the eecs251b group. All of our work will occur on the instructional servers on the `eda-[1-8]@eecs.berkeley.edu` 
+the eecs251b group. All of our work will occur on the instructional servers on the `eda-[1-8].eecs.berkeley.edu` 
 machines. You may connect to these machine directly via SSH with X11 Forwarding or via [X2Go](https://wiki.x2go.org/doku.php/download:start).
 
 For this course, it may be wise to work in the `/scratch` directory on the lab machine. Create a folder for yourself
@@ -190,7 +190,7 @@ Now, let's delve deeper into how Chipyard is structure by having you go on a sca
 copy the section of the file that selects this default subproject and config.***
 
 ***Q6: There are many different Rocket-based SoC configs that are shipped with Chipyard. In your lab report, point to the file
-that contains all the avialable Rocket-based configs and list which configs are available. Then, show that `MbusScratchpadRocketConfig`
+that contains all the available Rocket-based configs and list which configs are available. Then, show that `MbusScratchpadRocketConfig`
 (this replaces an off-chip memory port with a scratchpad memory) passes the same binary test that we ran in Section 3.1.***
 
 ***Q7: By inspecting the available configs, we can try to construct our own custom one. In your lab report, write the config (in the form
@@ -205,7 +205,7 @@ that contains all the avialable Rocket-based configs and list which configs are 
 example of this. In your lab report, describe which file allows us to choose whether to use a Verilog or Chisel version of the GCD,
 as well as the path to the Verilog file.***
 
-***Q9: To start a new porject using Chisel in Chipyard, you will need to do a few things. In your lab report, outline where you will put
+***Q9: To start a new project using Chisel in Chipyard, you will need to do a few things. In your lab report, outline where you will put
 your new project code and its directory structure (following convention), and which files you need to change in order to be able to compile 
 code from your new project.***
 
