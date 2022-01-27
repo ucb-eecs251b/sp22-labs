@@ -16,7 +16,10 @@ College of Engineering, University of California, Berkeley
 
 ## Overview
 
-TODO add overview
+This lab will introduce you to Chisel project creation as well as guide you through the
+design of the core elements of a SHA-3 accelerator. By the end of this lab, you should
+feel comfortable creating your own custom Chisel modules, simulating them, and debugging
+them using a waveform viewer.
 
 ## Chisel Project Creation
 
@@ -54,12 +57,8 @@ sbt 'testOnly gcd.GcdDecoupledTester'
 ```
 
 The first command will run all tests found in our project while the second command
-will run just the `GcdDecoupledTester`.
-
-TODO TODO TODO - Force them to write the main function for simple Chisel elaboration. 
-For some reason this is not included???
-
-TODO TODO TODO - Force them to add something to GCD block?? 
+will run just the `GcdDecoupledTester`. Now we can move on to designing our own
+RTL!
 
 ## SHA-3 Introduction
 Secure hashing algorithms represent a class of hashing functions that provide four
@@ -77,10 +76,7 @@ specification for SHA-3 was established. The algorithm operates on variable
 length messages with a [sponge function](https://en.wikipedia.org/wiki/Sponge_function),
 and thus alternates between absorbing chunks of the message into a set of state bits
 and permuting the state. The absorbing is a simple bitwise XOR while the permutation
-is amore complex function composed of several operations, &#1D6D8; 
-
-TODODOTOTTOTO add above unicode characters
-
+is amore complex function composed of several operations, &#967;, &#952;, &#961;, &#960;, &#953;,
 that all perform various bitwise operations, including rotations, parity calculations,
 XORs, etc. The Keccak hashing function is parameterized for different sizes of state
 and message chunks, but for this lab we will only support the Keccak-256 variant
@@ -152,13 +148,10 @@ would be better to start with something smaller but still testable. This should
 reduce complexity and debugging time. The most logical way to begin the design 
 would be to create a single cycle version that simply performs the permutation.
 Even this design has multiple components that are individually testable. A good
-implementation strategy would be to design each of the function blocks, CHI
-
-TODO add in the unicode characters for different functions
-
-individually and write unit-tests for the blocks. The Chisel source directory already
-has a skeleton of the code you will need to write, outlining how you should organize
-your implementation.
+implementation strategy would be to design each of the function blocks
+(&#967;, &#952;, &#961;, &#960;, &#953;) individually and write unit-tests for 
+the blocks. The Chisel source directory already has a skeleton of the code you 
+will need to write, outlining how you should organize your implementation.
 
 The given directory includes one of the modules implemented with a test. You are
 responsible for implementing the remaining modules and associated tests.
@@ -333,7 +326,6 @@ hierarchy window and then right click to choose `Add To Waves > New Wave View`.
     </b>
 </p>
 
-
 ## Conclusion 
 
 Congratulations! You have now designed and debugged the core of a SHA-3 accelerator
@@ -345,4 +337,4 @@ and build all sorts of Chisel hardware generators.
 This lab is an updated version of SP17 CS250's lab 1. Many people have contributed to versions
 of this lab over the years. Contributors include Colin Schmidt, James Martin,
 Yunsup Lee, Christopher Yarp, Brian Zimmer, Rimas Avizienis, Ben Keller, Krste Asanovic,
-Christopher Batter, John Lazzaro, and John Wawrzynek.
+Christopher Batten, John Lazzaro, and John Wawrzynek.
