@@ -151,7 +151,8 @@ run the &#952; test by running `sbt 'testOnly sha3.ThetaSpec'`. You are
 responsible for implementing the remaining modules. The tests for each function have
 already been implemented for you so you can focus on using Chisel for RTL design.
 Hopefully it should be obvious by now, but you can run any of the other available 
-tests (they should fail because they are empty...) by running the following command:
+tests (they should fail because the other module are not implemented....) by 
+running the following command:
 
 ```
 sbt 'testOnly <PackageName>.<ClassName>'
@@ -249,11 +250,11 @@ You should only need to edit the following files in order to get all tests to pa
 - Datapath.scala 
 - CtrlFSM.scala
 
-***Your lab 2 submission should consist of a zip file containing the following items:
-1. A file containing your responses to questions 1 and 2
-2. All scala files in `src/main/scala/sha3` directory 
-3. All scala files in `src/test/scala/sha3`
-4. A screenshot of the output of the final test `sbt 'testOnly sha3.Sha3AccelSpec'`***
+***Your lab 2 submission should consist of a zip file containing the following items:***
+***1. A file containing your responses to questions 1 and 2***
+***2. All scala files in `src/main/scala/sha3` directory***
+***3. All scala files in `src/test/scala/sha3`***
+***4. A screenshot of the output of the final test `sbt 'testOnly sha3.Sha3AccelSpec'`***
 
 ## Acknowledgements
 
