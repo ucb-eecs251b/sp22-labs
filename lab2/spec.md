@@ -37,32 +37,25 @@ to clone the Chisel project for lab 2.
 
 ```
 cd /scratch/<your-username>
-git clone /home/ff/eecs251b/sp22-workspace/sp22-chisel-project
+git clone /home/ff/eecs251b/sp22-workspace/sp22-chisel-project-template
 ```
 
 Lab 1 should have already familiarized you with the sbt directory structure. If you need
 refreshing visit this [page](https://www.scala-sbt.org/1.x/docs/Directories.html).
 The template repo comes with a couple example Chisel source files 
 (`DecoupledGCD.scala` and `GCD.scala`) as well as an example test for the `DecoupledGcd` 
-module. To run this test run one of the following commands:
+module. To run this test run the following command:
 
 ```
-sbt test
+sbt 'testOnly gcd.GCDSpec'
 ```
 
-OR
-
-```
-sbt 'testOnly gcd.GcdDecoupledTester'
-```
-
-The first command will run all tests found in our project while the second command
-will run just the `GcdDecoupledTester`. Now we can move on to designing our own
-RTL!
+This will run the `GCDSpec` test included in `src/test/scala/gcd/GCDSpec.scala`
 
 ## SHA-3 Introduction
-Secure hashing algorithms represent a class of hashing functions that provide four
-attributes: 
+Before we can start building our SHA-3 accelerator, we must understand a few things
+about the SHA-3 algorithm and secure hashing algorithms in general. Secure hashing 
+algorithms represent a class of hashing functions that provide four attributes: 
  
 1. Ease of hash computation
 2. Inability to generate the message from the hash (one-way property)
@@ -71,12 +64,12 @@ attributes:
 
 The National Institute of Standards and Technology (NIST) recently held a competition
 for a new algorithm to be added to its set of Secure Hashing Algorithms (SHA). 
-In 2012, the winner was determined to be the Keccak hasing function and rough 
+In 2012, the winner was determined to be the Keccak hashing function and a rough 
 specification for SHA-3 was established. The algorithm operates on variable 
 length messages with a [sponge function](https://en.wikipedia.org/wiki/Sponge_function),
 and thus alternates between absorbing chunks of the message into a set of state bits
 and permuting the state. The absorbing is a simple bitwise XOR while the permutation
-is amore complex function composed of several operations, &#967;, &#952;, &#961;, &#960;, &#953;,
+is a more complex function composed of several operations, &#967;, &#952;, &#961;, &#960;, &#953;,
 that all perform various bitwise operations, including rotations, parity calculations,
 XORs, etc. The Keccak hashing function is parameterized for different sizes of state
 and message chunks, but for this lab we will only support the Keccak-256 variant
@@ -103,8 +96,8 @@ of many standards documents with FIPS PUB 202 being a rather short example
 n, and ac adding more pages). Hardware designers are often responsible for implementing
 different standards so learning how to read standards documents is a valuable skill.
 
-Fortunately, you will not need to look at the FIPS PUB 202 too closely for this lab as C
-refernce implementation is provided for you. The C implementation constitues the 
+Fortunately, you will not need to look at the FIPS PUB 202 too closely for this lab as a C
+reference implementation is provided for you. The C implementation constitutes the 
 software golden reference for the lab. The first step in most projects is to create a
 software golden refernce that produces the behavior that is expected from the hardware
 design. The results produced by the hardware design are compared against the results 
@@ -112,11 +105,11 @@ from the golden reference design to determine if the hardware design is function
 as expected. In addition to providing the model by which the hardware design is checked,
 the golden reference can also serve as a basis for the initial hardware design.
 
-***Q1: Why might one produce a standard document like FIPS PUB 202 isntead of simply
+***Q1: Why might one produce a standard document like FIPS PUB 202 instead of simply
 releasing a C reference? Answer this question at a high level by looking at
-the sections of FIPS PUB 202 that detail the Keccak algorithm (sections 3.2-3.4).***
+the sections of FIPS PUB 202 that details the Keccak algorithm (sections 3.2-3.4).***
 
-***Q2:What are some benefits of producing a software golden reference before beginning
+***Q2: What are some benefits of producing a software golden reference before beginning
 the hardware design? What are some benefits of this type of verification vs. writing
 explicit `poke` and `expect` style tests? What are some dangers of this type of 
 verification?***
@@ -149,26 +142,25 @@ reduce complexity and debugging time. The most logical way to begin the design
 would be to create a single cycle version that simply performs the permutation.
 Even this design has multiple components that are individually testable. A good
 implementation strategy would be to design each of the function blocks
-(&#967;, &#952;, &#961;, &#960;, &#953;) individually and write unit-tests for 
+(&#952;, &#961;, &#960;, &#967;, &#953;) individually and write unit-tests for 
 the blocks. The Chisel source directory already has a skeleton of the code you 
 will need to write, outlining how you should organize your implementation.
 
-The given directory includes one of the modules implemented with a test. You are
-responsible for implementing the remaining modules and associated tests.
+The given directory includes the &#952; module implemented with a test. You can
+run the &#952; test by running `sbt 'testOnly sha3.ThetaSpec'`. You are
+responsible for implementing the remaining modules. The tests for each function have
+already been implemented for you so you can focus on using Chisel for RTL design.
+Hopefully it should be obvious by now, but you can run any of the other available 
+tests (they should fail because they are empty...) by running the following command:
 
-You can run the given test with `test-unit-firrtli`, `test-unit-verilator`,
-`test-unit-vcs` make targets. `test-unit` make target defaults to `test-unit-firrtl`.
-These targets allow you to choose any of the main classes to be run so they will
-continue to work as you add more tests for new modules. `test-unit-firrtl` uses
-the FIRRTL interpeter; `test-unit-vcs` uses Verilog with VCS; `test-unit-verilator`
-uses Verilog with Verilator. These three testing tools are discussed in more detail
-below.
+```
+sbt 'testOnly <PackageName>.<ClassName>'
+```
 
-Testing a design in this manner should make integration easier and more bug free.
-Once you have connected the datapath together another logical point to test the
-design arrises and you should have something like Figure 2. In addition to the 
-unit-tests from before you should now write a larger test to ensure the permutation
-is happening correctly.
+You can explore the `src/test/scala/sha3` directory to see the other available tests. 
+Testing a design in this manner (i.e. via unit tests) should make integration easier 
+and more bug free. Once you have connected the datapath together, another logical point 
+to test the design arises and you should have something like Figure 2. 
 
 <p align="center">
  <img src="figs/sha3_unit_tests.png" alt="sha3_unit_tests"/>
@@ -179,150 +171,65 @@ is happening correctly.
 
 ## SHA-3 Control: State Machines and Interfaces
 
-With a complete and tested datapath the next step in implementing SHA-3 is to write
+With a complete and tested datapath, the next step in implementing SHA-3 is to write
 something to control the datapth. For this lab, some of the more complex needs of
 the SHA-3 accelerator have been abstracted away or given to you. You will be given a
 section of the message that has already been read from memory and been padded
 appropriately. This limits the lengths of messages your design can hash to those
 smaller than 1088 bits, but makes the design significantly simpler.
 
-With this interface you will need to implement a control state machine that can read
-the message data into the datapath's state element, perform the correct number of
-permutations, and finally return the resulting hash. The control state machine
-should also adhere to the ready-valid protocol for these signals. The state machine
-should keep track of whether the accelerator is busy and how many rounds of 
-permutation have been done. In addition, since we are only hashing a single chunk
-at a time, the state machine is also responsible for starting each hash with the
-correctl absorbed state.
+With this interface you will need to implement a control state machine (skeleton located
+at `src/main/scala/sha3/CtrlFSM.scala`) that can read the message data into the datapath's 
+state element, perform the correct number of permutations, and finally return the resulting 
+hash. The control state machine should also adhere to the ready-valid protocol for these 
+signals. The state machine should keep track of whether the accelerator is busy and how 
+many rounds of permutation have been done. In addition, since we are only hashing a single 
+chunk at a time, the state machine is also responsible for starting each hash with the
+correct absorbed state.
 
-The main Chisel file for the whole accelerator includes a test that should test
-most of the functionality. This test is replicated in a step-by-step fashion
-online at: [https://github.com/gvanas/KeccakCodePackage/blob/master/TestVectors/KeccakF-1600-IntermediateValues.txt](https://github.com/gvanas/KeccakCodePackage/blob/master/TestVectors/KeccakF-1600-IntermediateValues.txt).
+The final SHA-3 accelerator block (essentially just connects the combinational datapath with the 
+control FSM) has been given to you and is located in `src/main/scala/sha3/Sha3Accel.scala`.
+You can also find the final test in `src/test/scala/sha3/Sha3AccelSpec.scala`. 
+Obviously, you will not want to run this test until you have all of your blocks 
+implemented and hooked up properly. This final test is replicated in a step-by-step
+fasion online at: [https://github.com/gvanas/KeccakCodePackage/blob/master/TestVectors/KeccakF-1600-IntermediateValues.txt](https://github.com/gvanas/KeccakCodePackage/blob/master/TestVectors/KeccakF-1600-IntermediateValues.txt).
 
-## SHA-3 Chisel Testing
-When you are ready to test your code, there are three methods from which to choose. 
-First, Chisel can run a FIRRTL interpreter which implements a cycle-accurate 
-simulation of your design. To do this, run the following commands:
+## Simulating with Chisel
 
-```
-make test-firrtl
-```
-
-Second, Chisel can run your tests by generating Verilog and then compiling it using
-Verilator.
-
-```
-make test-verilator
-```
-
-Third, Chisel can run your tests by generating Verilog and then using Synopsys VCS.
-
-```
-make test-vcs
-```
-
-In addtion, Chisel can also generate Verilog code that can be used as input to an
-ASIC flow.
-
-```
-make verilog
-```
-
-Once you are happy that your design passes the given test you should add at least one
-additional test for the design. It could be a test that checks for a different hash,
-or a test that tests for a specific control sequence that seems difficult to get
-right or any other case you think might not be handled correctly.
-
-Finally, I would also like you to run two more make commands and save the output of 
-these runs for submission.
-
-This will create two files in `build` that will record the results of your simulations.
-
-## Debugging with Chisel
-
-To debug your Chisel design, you can use either the FIRRTL interpreter, Verilator,
-or Synopsys VCS.
+For this lab, Chisel's FIRRTL interpreter, [treadle](https://github.com/chipsalliance/treadle),
+will be used to simulate your blocks. The backend simulator can be changed by
+using a simulator backend annotation. This process was done behind the scenes
+in lab 1 when you simulated your project using Synopsys VCS. You do not need to mess 
+with backends other than treadle for this lab, but if you are interested in learning more
+you can find details [here](https://www.chisel-lang.org/chiseltest/).
 
 Chisel has a specific debug API for the tester consisting of peeks, pokes, and expects.
 Refer to the test file `src/test/scala/gcd/GCDSpec.scala` for an example usage of this API.
 
-## Verilator: Simulating your Verilog
+## Debugging with GTKWave 
 
-In this lab, we will not be using Verilator directly but through Chisel. Verilator
-produces a waveform file, `*.vcs`, that we will use to help us debug. Chisel
-first elaborates your Chisel code into Verilog. Verilator then takes this code, cross
-compiles into C++, and the C++ is then in turn compiled into native instructions
-producing a binary. Chisel then interacts with this binary to test your circuit.
-
-## Synopsys VCS: Simulating your Verilog Again
-
-In this lab, we will also not be using VCS directly but rather using it through Chisel,
-so the exact options are less important right now but for your reference info on the
-options and how a more complete setup, which might be used in later labs is included
-below.
-
-VCS compiled Verilog source files into a native binary that implements a simulation
-of the Verilog design. VCS can simulate both behavioral and RTL level Verilog modules.
-In behavioral models, a module's functionality can be described more easily by using
-higher levels of abstraction. In RTL descriptions, a module's functionality is
-described ata level that can be mapped to a collection of registers and gates. Verilog
-behavioral models may not be synthesizable, but they can be useful in constructing
-testbenches and when simulating external devices that your design interfaces with.
-An example of compiling with VCS is given below.
+Where should you start if a design doesn't pass your test? The answer is to
+debug your RTL code using gtkwave (or any decent waveform viewing tool such as DVE 
+or Simvision) to generate a waveform view of signals in your design. After running 
+a simulation, you should find a `*.vcd` file corresponding to your simulation in the 
+`test_run_dir` directory. This file contains a record of all signals and how they 
+changed over the course of the simulation. DVE can read this file and visualize the 
+wave form. Notice that the design will contain many signals with the `T_` prefix which hold 
+intermediate values produced by the Chisel compiler. To open gtkwave run the following 
+command (make sure you are using X2GO):
 
 ```
-cd build-unscripted/vcs-sim-behav
-vcs -full64 -PP +lint=all +v2k -timescale=1ns.10ps \
-../../src/gcdGCDUnit_behav.v \
-../../src/gcdTestHarness_behav.v
-```
-
-By default, VCS produces a simulator binary called simv. The `-PP` command line option
-turns on support for using the VPD trace output format. The `+lint=all` argument
-turns on all Verilog warnings. Since it is quite easy to write legal Verilog code
-that doesn't behave as intended, you should always enable all warnings to help you
-catch mistakes. For example, VCS will warn you if you try to connect two nets with
-different bitwidths or don't wire up a port on a module. Always try to eliminate
-all VCS compilation errors and warnings. The `+v2k` command line option tells VCS to
-enable Verilog-2001 language features. Verilog allows a designer to specify how
-the abstract delay units in their design map into real time units using the ``timescale`
-compiler directive. To make it easy to change this parameter you will specify it on the
-command line instead of in the Verilog. After these arguments you list the Verilog source
-files. The `-v` flag is used to indicate which Verilog files are part of a library
-(and thus should always be compiled). After running this command, you should see text
-output indicating that VCS is parsing the Verilog files and compiling the modules.
-Notice that VCS actually generated C++ code which is then compiled using `gcc`.
-When VCS is finished there should be a `simv` executable in the build directory.
-
-## Debugging with DVE
-
-Where should you start if a design doesn't pass all your tests? The answer is to
-debug your RTL code using the Discovery Visulation Environment (DVE) GUI to
-generate a waveform view of signals in your design. The simulator has already written
-a trace of the activity of every net in your design to the `Sha2Accel.vcd` file.
-DVE can read this file and visualize the wave form. Notice that the design will contain
-many signals with the `T_` prefix which hold intermediate values produced by the Chisel
-compiler. To open DVE run the following command (make sure you are using X2GO):
-
-```
-make test-verilator
-dve -full64 -vcd test_run_dir/verilator/sha3.<AutoGeneratedName>/Sha3Accel.vcd &
-```
-
-You can also use DVE to debug failing unit tests.
-
-```
-make test-verilator
-dve -full64 -vcd test_run_dir/verilator/sha3.<AutoGeneratedName>/<UnitName>.vcd &
+gtkwave test_run_dir/<AutoGeneratedName>/<ModuleName>.vcd &
 ```
 
 To add signals to the waveform window (see Figure 3) first select them in the
-hierarchy window and then right click to choose `Add To Waves > New Wave View`.
+lower left Signal Display window and then drag them into the Signal Time window. I would 
+recommend spending some time playing around with GTKWave to get comfortable with it.
 
 <p align="center">
- <img src="figs/dve.png" alt="dve"/>
+ <img src="figs/gtkwave.png" alt="gtkwave"/>
     <b>
-    <em>Fig. 3 - DVE Waveform Window</em>
+    <em>Fig. 3 - GTKWave Waveform Window</em>
     </b>
 </p>
 
@@ -333,7 +240,23 @@ in Chisel. There are other optimizations and additions required to actually impl
 a complete accelerator, but this lab should have given you the basic tools to go forward
 and build all sorts of Chisel hardware generators.
 
+## Deliverables
+
+You should only need to edit the following files in order to get all tests to pass:
+- RhoPi.scala
+- Chi.scala
+- Iota.scala
+- Datapath.scala 
+- CtrlFSM.scala
+
+***Your lab 2 submission should consist of a zip file containing the following items:
+1. A file containing your responses to questions 1 and 2
+2. All scala files in `src/main/scala/sha3` directory 
+3. All scala files in `src/test/scala/sha3`
+4. A screenshot of the output of the final test `sbt 'testOnly sha3.Sha3AccelSpec'`***
+
 ## Acknowledgements
+
 This lab is an updated version of SP17 CS250's lab 1. Many people have contributed to versions
 of this lab over the years. Contributors include Colin Schmidt, James Martin,
 Yunsup Lee, Christopher Yarp, Brian Zimmer, Rimas Avizienis, Ben Keller, Krste Asanovic,
