@@ -244,16 +244,16 @@ and build all sorts of Chisel hardware generators.
 ## Deliverables
 
 You should only need to edit the following files in order to get all tests to pass:
-- RhoPi.scala
-- Chi.scala
-- Iota.scala
-- Datapath.scala 
-- CtrlFSM.scala
+- `src/main/scala/sha3/RhoPi.scala`
+- `src/main/scala/sha3/Chi.scala`
+- `src/main/scala/sha3/Iota.scala`
+- `src/main/scala/sha3/Datapath.scala` 
+- `src/main/scala/sha3/CtrlFSM.scala`
 
-***Your lab 2 submission should consist of a zip file containing the following items:***
-***1. A file containing your responses to questions 1 and 2***
-***2. All scala files in `src/main/scala/sha3` directory***
-***3. All scala files in `src/test/scala/sha3`***
+***Your lab 2 submission should consist of a zip file containing the following items:***  
+***1. A file containing your responses to questions 1 and 2***  
+***2. All scala files in `src/main/scala/sha3` directory***  
+***3. All scala files in `src/test/scala/sha3`***  
 ***4. A screenshot of the output of the final test `sbt 'testOnly sha3.Sha3AccelSpec'`***
 
 ## Acknowledgements
