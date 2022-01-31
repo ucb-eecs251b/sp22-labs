@@ -193,7 +193,7 @@ control FSM) has been given to you and is located in `src/main/scala/sha3/Sha3Ac
 You can also find the final test in `src/test/scala/sha3/Sha3AccelSpec.scala`. 
 Obviously, you will not want to run this test until you have all of your blocks 
 implemented and hooked up properly. This final test is replicated in a step-by-step
-fasion online at: [https://github.com/gvanas/KeccakCodePackage/blob/master/TestVectors/KeccakF-1600-IntermediateValues.txt](https://github.com/gvanas/KeccakCodePackage/blob/master/TestVectors/KeccakF-1600-IntermediateValues.txt).
+fasion online at: [https://github.com/XKCP/XKCP/blob/master/tests/TestVectors/KeccakF-1600-IntermediateValues.txt](https://github.com/XKCP/XKCP/blob/master/tests/TestVectors/KeccakF-1600-IntermediateValues.txt).
 
 ## Simulating with Chisel
 
