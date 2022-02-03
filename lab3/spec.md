@@ -26,7 +26,7 @@ an overview of a typical VLSI flow, to identify what is important for the
 designer to analyze, and to introduce some more practical aspects of a VLSI
 flow.
 
-### VLSI Toolflor Introduction
+### VLSI Toolflow Introduction
 
 Figure 1 shows an overview of a partial VLSI toolflow. In this lab, you will
 use Synopsys VCS to simulate and debug your RTL design. We will be using 
@@ -64,7 +64,7 @@ interact with the tools directly, from the GUI and the command line, as well as
 through Hammer.
 
 <p align="center">
- <img src="figs/toolflow_diagram.pdf" alt="toolflow"/>
+ <img src="figs/toolflow_diagram.png" alt="toolflow"/>
     <b>
     <em>Fig. 1 - Basic VLSI Toolflow</em>
     </b>
@@ -95,7 +95,7 @@ RTL:
 
 The block diagram is shown in Figure 2. We have provided you with a test harness
 that will drive the inputs and check the outputs of your design. Your module is 
-named `gcdGCDUnit` and has the interface shown below.
+named `gcdGCDUnit_rtl` and has the interface shown below.
 
 ```v
 module gcdGCDUnit_rtl#( parameter W = 16 )
@@ -214,7 +214,7 @@ default steps in the flow and add new ones.
 A hammer call generally looks like this:
 
 ```
-hammer-vlsi <action> -e env.yml -p input.yml --obj-dir build
+hammer-vlsi <action> -e env.yml -p input.yml --obj_dir build
 ```
 
 `hammer-vlsi` is the Hammer driver program (`hammer-vlis` is the default ont, but
@@ -223,7 +223,7 @@ into your flow-we will be using `example-vlsi`). `action` is a particular part o
 flow that you want to run (e.g. synthesis/syn, place-and-route/par, drc, lvs, etc...).
 `-e env.yml` is including env.yml as an environment config. `-p input.yml` is including
 input.yml as a design input, and there can be as many files given via `-p` as needed
-in increasing order of precedence. `--obj-dir build` is specifying that the outputs
+in increasing order of precedence. `--obj_dir build` is specifying that the outputs
 should be placed in a subdirectory called build. In this lab, we will push the GCD
 through the VLSI flow by manually invoking Hammer commands. Then, we will see how
 Chipyard packages Hammer commands using Makefiles on a GCD Chisel module included
@@ -252,10 +252,12 @@ a structual verilog (a netlist). Behavioral Verilog cannot be synthesized
 and should only be used in testbenches. RTL-level Verilog expresses behavior
 as combinational and sequential logic at a higher level. Structural-level
 Verilog expresses behavior as specific gates wired together. You will start
-with simulating the GCD module RTL (before it is synthesized).
+with simulating the GCD module RTL (before it is synthesized). Don't forget
+to source the shell script `chipyard/scripts/inst-env.sh` from the top `chipyard`
+directory before running the following command.
 
 ```
-./example-vlsi sim -e inst-env.yml -p inst-asap7.yml -p lab3/gcd.yml --obj-dir build/lab3
+./example-vlsi sim -e inst-env.yml -p inst-asap7.yml -p lab3/gcd.yml --obj_dir build/lab3
 ```
 
 Like in Lab 1, VCS compiles your Verilog into a simulator, and then executes it. Inside
@@ -299,7 +301,7 @@ knowledge of your clock source.
 Now, return to the `vlsi` directory and run the following command:
 
 ```
-./example-vlsi syn -e inst-env.yml -p inst-asap7.yml -p lab3/gcd.yml --obj-dir build/lab3
+./example-vlsi syn -e inst-env.yml -p inst-asap7.yml -p lab3/gcd.yml --obj_dir build/lab3
 ```
 
 At the beginning of the Hammer logging output, you can see the default steps involved
@@ -391,9 +393,9 @@ call `syn-to-par`.
 
 ```
 ./example-vlsi syn-to-par -e inst-env.yml -p build/lab3/syn-rundir/syn-output-full.json \
-    -o build/lab3/par-input.json --obj-dir build/lab3
+    -o build/lab3/par-input.json --obj_dir build/lab3
 ./example-vlsi par -e inst-env.yml -p build/lab3/par-input.json \
-    --obj-dir build/lab3
+    --obj_dir build/lab3
 ```
 
 The `syn-to-par` translation action is one way in which Hammer is a VLSI flow tool. This is
