@@ -448,6 +448,13 @@ are the locations where those nets would be routed to/from.
 
 ***Q12: Submit a screenshot of your design with the above visual settings set.***
 
+<p align="center">
+ <img src="figs/innovus_route.PNG" alt="route"/>
+    <b>
+    <em>Fig. 3 - Routed signals shown in Innovous w/ larger core area</em>
+    </b>
+</p>
+
 Take a look at the generated clock tree. Choose Clock > CCopt Clock Tree Debugger.
 Choose Ok. In this diagram, the source node is the clock source and the leaf nodes
 are the sequential elements that the clock is distributed to. By looking at the scale
@@ -462,14 +469,6 @@ which you will learn about in lecture.
 
 ***Q14: What would happen to the path timing calculations if the clock tree
 is very unbalanced (i.e. lots of skew between leaf nodes)?***
-
-
-<p align="center">
- <img src="figs/innovus_route.PNG" alt="route"/>
-    <b>
-    <em>Fig. 3 - Routed signals shown in Innovous w/ larger core area</em>
-    </b>
-</p>
 
 <p align="center">
  <img src="figs/innovus_clocktree.PNG" alt="clock"/>
