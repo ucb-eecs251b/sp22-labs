@@ -537,16 +537,6 @@ by these checks if you open up the violation browser from the toolbar. Clicking 
 violation will zoom you to it. Note that for ASAP7, Innovus is not aware of all the 
 DRC rules that Calibre checks for.
 
-In Innovus, you could also read the Calibre violation database. In the Innovus terminal, 
-the command would be:
-```
-read_markers -type calibre -rule\_map\_file \\ 
-    ~eecs251b/sp22-workspace/asap7/asap7PDK_r1p7/calibre/ruledirs/drc/drcRules\_calibre\_asap7.rul \\
-    ../drc-rundir/drc\_results.db. 
-```
-However, this will not work for ASAP7 because the coordinates for the Calibre markers 
-are 4x scaled down vs. the Innovus database.
-
 ### LVS: Layout vs. Schematic
 You must also run LVS to help verify that you post-P&R netlist matches the actual
 post-P&R layout. At first, it may seem like the outputs from the same tool must
@@ -575,11 +565,8 @@ cd build/lab3/lvs-rundir
 ```
 
 Like DRC, you will see the CalibreDRV GUI. You should get a green smiley face in the 
-"Comparison Results" tab of the RVE window and text smiley face in the 
-`build/lab3/lvs-rundir/lvs_results.rpt` file if the design is LVS clean. However,
-for ASAP7, there are some issues in the standard cells that cases the design to come
-out LVS dirty. Sometimes certain cells must be excluded from your flow, and the 
-ASAP7 Hammer plugin has an example of this.
+"Comparison Results" tab of the RVE window and a text smiley face in the 
+`build/lab3/lvs-rundir/lvs_results.rpt` file if the design is LVS clean.
 
 ***Q16: Add a screenshot of Calibre RVE showing the LVS results to your lab report.***
 
