@@ -198,7 +198,7 @@ Notice the top level pins of the schematic.  These are the same pins that will
 be the inputs and outputs of our standard cell layout.
 
 <p align="center">
- <img src="figs/dff-schematic_lab4.PNG" alt="sch"/>
+ <img src="figs/dff-schematic_lab4.png" alt="sch"/>
     <b>
     <em>Fig. 3 - Schematic of the DFF</em>
     </b>
@@ -235,7 +235,7 @@ modifications are required for this lab.  The following instructions are a
 general tutorial for basic layout editing.
 
 <p align="center">
- <img src="figs/dff-layout_lab4.PNG" alt="layout"/>
+ <img src="figs/dff-layout_lab4.png" alt="layout"/>
     <b>
     <em>Fig. 4 - DFF Layout</em>
     </b>
@@ -393,7 +393,7 @@ shown in Figure 6, which is taken from the reference manual at
 will only use Liberate Characterization to generate LIBs for our flip-flop.
 
 <p align="center">
- <img src="figs/completeSuite_lab4.png" alt="comp_suite"/>
+ <img src="figs/complete_suite_lab4.png" alt="comp_suite"/>
     <b>
     <em>Fig. 6 - The Complete Cadence Liberate Suite</em>
     </b>
