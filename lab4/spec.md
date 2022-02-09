@@ -16,31 +16,29 @@ College of Engineering, University of California, Berkeley
 # TODO create an overview that covers both sections of lab (3 and 4)
 
 ## Overview
-In Lab 3, you used the digital design flow to place-and-route a design using a 
-pre-existing library of standard cells based, then pushed it through DRC and 
-LVS. In this lab, we will walk you through the basics of custom IC design. 
-First, we will place-and-route a 4-16 decoder using the Hammer flow in Chipyard.
-We will then extract the design and simulate both the non-extracted and 
-extracted netlist. With that, we can compare the timing and energy results 
-between pre- and post-extraction.  
+In the previous lab, you used the digital design flow to place-and-route a
+design using a pre-existing library of standard cells based, then pushed it
+through DRC and LVS. In this lab, we will walk you through the basics of custom
+IC design. First, we will place-and-route a 4-16 decoder using the Hammer flow
+in Chipyard. We will then extract the design and simulate both the
+non-extracted and extracted netlist. With that, we can compare the timing and
+energy results between pre- and post-extraction.  
 
 Then, we will take a closer look at the ASAP7 standard cells we have been using 
 throughout the course and start a custom cell design in Cadence Virtuoso. You 
 will inspect a simple D flip-flop, run DRC to verify the layout is 
 manufacturable, and LVS to verify that your layout matches your schematic. 
-Lastly, you will run parasitic extraction on your design and run some basic 
+Then, you will run parasitic extraction on your design and run some basic 
 simulations to estimate some of its characteristics.
 
-In Lab 3, you learned how to do extracted simulations on a placed-and-routed
-block, then learned how to run a standard cell through the the first part of the
-custom design flow.  At the end, you set up extracted simulations of the
-flip-flop to calculate its setup time.  The next task is to bridge the gap from
-designing the cells to abstracting then in a form that the VLSI flow tools can
-efficiently consume and process.  For example, synthesis and P\&R tools must be
-able to calculate path delay without running a Spice simulation itself,
-necessitating timing models.  Similarly, P\&R only cares about the boundary,
-pins, and blockages of cells instead of the entire transistor-level layout,
-necessitating layout abstracts. 
+The next task is to bridge the gap from designing the cells to abstracting them
+in a form that the VLSI flow tools can efficiently consume and process.  For
+example, synthesis and P&R tools must be able to calculate path delay without
+running a Spice simulation itself, necessitating timing models. Similarly, P&R
+only cares about the boundary, pins, and blockages of cells instead of the
+entire transistor-level layout, necessitating layout abstracts. We will see how
+to generate both types of abstractions, timing and physical, from a custom
+circuit.
 
 ## Getting Started: Decoder Extraction
 
@@ -150,7 +148,7 @@ virtuoso &
 ```
 
 <p align="center">
- <img src="figs/virtuoso.png" alt="virtuoso"/>
+ <img src="figs/virtuoso_lab4.png" alt="virtuoso"/>
     <b>
     <em>Fig. 2 - Virtuoso</em>
     </b>
@@ -200,7 +198,7 @@ Notice the top level pins of the schematic.  These are the same pins that will
 be the inputs and outputs of our standard cell layout.
 
 <p align="center">
- <img src="figs/dff-schematic.PNG" alt="sch"/>
+ <img src="figs/dff-schematic_lab4.PNG" alt="sch"/>
     <b>
     <em>Fig. 3 - Schematic of the DFF</em>
     </b>
@@ -237,7 +235,7 @@ modifications are required for this lab.  The following instructions are a
 general tutorial for basic layout editing.
 
 <p align="center">
- <img src="figs/dff-layout.PNG" alt="layout"/>
+ <img src="figs/dff-layout_lab4.PNG" alt="layout"/>
     <b>
     <em>Fig. 4 - DFF Layout</em>
     </b>
@@ -374,7 +372,7 @@ and see how this is applicable to not only the standard cells, but also
 non-digital blocks (such as analog IP) that need to be integrated into a design.
 
 <p align="center">
- <img src="figs/growingLibraries.png" alt="grow_libs"/>
+ <img src="figs/growing_libraries_lab4.png" alt="grow_libs"/>
     <b>
     <em>Fig. 5 - Exponential Growth in Library Characterization</em>
     </b>
@@ -395,7 +393,7 @@ shown in Figure 6, which is taken from the reference manual at
 will only use Liberate Characterization to generate LIBs for our flip-flop.
 
 <p align="center">
- <img src="figs/completeSuite.png" alt="comp_suite"/>
+ <img src="figs/completeSuite_lab4.png" alt="comp_suite"/>
     <b>
     <em>Fig. 6 - The Complete Cadence Liberate Suite</em>
     </b>
@@ -424,14 +422,14 @@ have used so far.
 Finally, there are additional things to characterize: power, noise immunity, signal integrity, process variation, and electromigration. Liberate will by default analyze power and its importance is self-explanatory, but the latter few are used to ensure product reliability. You will learn about these in lecture but they are outside the scope of this lab. 
 
 <p align="center">
- <img src="figs/ccs.png" alt="ccs"/>
+ <img src="figs/ccs_lab4.png" alt="ccs"/>
     <b>
     <em>Fig. 7 - Composite Current Source Model</em>
     </b>
 </p>
 
 <p align="center">
- <img src="figs/ecsm.png" alt="ecsm"/>
+ <img src="figs/ecsm_lab4.png" alt="ecsm"/>
     <b>
     <em>Fig. 8 - Effective Current Source Model</em>
     </b>
@@ -583,7 +581,7 @@ Be advised that Abstract is quite an old tool, and may display like this in
 your X2Go session, where a lot of the menu text is invisible:
 
 <p align="center">
- <img src="figs/broken_abstract.png" alt="abs"/>
+ <img src="figs/broken_abstract_lab4.png" alt="abs"/>
     <b>
     <em>Fig. 9 - Incorrectly Displayed Abstract</em>
     </b>
@@ -594,7 +592,7 @@ session and re-install your X2Go with all legacy fonts, as shown here for a
 Windows installer:
 
 <p align="center">
- <img src="figs/x2go_fonts.png" alt="fonts"/>
+ <img src="figs/x2go_fonts_lab4.png" alt="fonts"/>
     <b>
     <em>Fig. 10 - Selecting Legacy Fonts in X2Go Installer</em>
     </b>
@@ -672,8 +670,8 @@ generate an abstract. We are going to go through them from left to right:
      right. By default, this is filled in correctly and lists the via layers
      that join adjacent metal layers.
   
-  Now, click Run. The abstract log should tell you that all 5 nets have been
-  extracted.
+   Now, click Run. The abstract log should tell you that all 5 nets have been
+   extracted.
   
 6. Click on the Abstract button (square nestled in an L-shape route). This step
    adjusts pins and creates blockages, overlaps, and grids. There are 7 tabs:
@@ -852,17 +850,16 @@ vlsi.technology.extra_libraries:
       supplies:
         VDD: "0.77 V"
         GND: "0 V"
-\end{minted}
 ```
 
 ## Conclusion
 
-This lab was meant to round out the custom design flow. You now know how to
-generate all of the required collateral for the VLSI tools for both a standard
-cell and a bigger custom cell.  You learned how to use Cadence Abstract
-Generator (to create the LEF) and Cadence Liberate (to create the LIB) in
-detail, which may come in handy for your projects if you need to rapidly
-characterize and abstract custom cells.
+This lab was meant to give a fairly complete introduction to the custom design
+flow. You now know how to generate all of the required collateral for the VLSI
+tools for both a standard cell and a bigger custom cell. You learned how to
+use Cadence Abstract Generator (to create the LEF) and Cadence Liberate (to
+create the LIB) in detail, which may come in handy for your projects if you
+need to rapidly characterize and abstract custom cells.
 
 As described, there are still multiple characterizations that we have not
 explored in depth, such as power, leakage, electromigration, antenna, and more.
@@ -871,3 +868,7 @@ results. These are left for you to explore for your projects or future
 research.
 
 ## Acknowledgments
+This lab is a condensed and updated version of 2 labs written by Harrison Liew,
+Daniel grubb, Sean Huang, and Brian Zimmer. Additionally, we'd like to
+recognize ECE 6332 - Introduction to VLSI Design (for the 21st Century) at UVA
+for the excellent ASAP7 layout reference.
