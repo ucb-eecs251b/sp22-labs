@@ -13,8 +13,6 @@ Department of Electrical Engineering and Computer Science
 College of Engineering, University of California, Berkeley
 </p>
 
-# TODO create an overview that covers both sections of lab (3 and 4)
-
 ## Overview
 In the previous lab, you used the digital design flow to place-and-route a
 design using a pre-existing library of standard cells based, then pushed it
@@ -129,9 +127,7 @@ netlist, run DRC and LVS, and simulate it.
 
 <p align="center">
  <img src="figs/custom-cell-design-flow.png" alt="custom_cell"/>
-    <b>
-    <em>Fig. 1 - Custom Cell Design Flow</em>
-    </b>
+    <br><em>Fig. 1 - Custom Cell Design Flow</em></br>
 </p>
 
 Start by running the following commands to setup and run Cadence Virtuoso 
@@ -149,9 +145,9 @@ virtuoso &
 
 <p align="center">
  <img src="figs/virtuoso_lab4.png" alt="virtuoso"/>
-    <b>
+    <br>
     <em>Fig. 2 - Virtuoso</em>
-    </b>
+    </br>
 </p>
 
 In the Library Manager, you will notice that there are several libraries already
@@ -199,9 +195,9 @@ be the inputs and outputs of our standard cell layout.
 
 <p align="center">
  <img src="figs/dff-schematic_lab4.png" alt="sch"/>
-    <b>
+    <br>
     <em>Fig. 3 - Schematic of the DFF</em>
-    </b>
+    </br>
 </p>
 
 If you want to instantiate this cell in a testbench or other schematic, you need
@@ -236,9 +232,9 @@ general tutorial for basic layout editing.
 
 <p align="center">
  <img src="figs/dff-layout_lab4.png" alt="layout"/>
-    <b>
+    <br>
     <em>Fig. 4 - DFF Layout</em>
-    </b>
+    </br>
 </p>
 
 Figure 4 is a screenshot of what your copied DFF layout should look like.  A
@@ -373,9 +369,9 @@ non-digital blocks (such as analog IP) that need to be integrated into a design.
 
 <p align="center">
  <img src="figs/growing_libraries_lab4.png" alt="grow_libs"/>
-    <b>
+    <br>
     <em>Fig. 5 - Exponential Growth in Library Characterization</em>
-    </b>
+    </br>
 </p>
 
 ## Cadence Liberate: Characterization
@@ -394,9 +390,9 @@ will only use Liberate Characterization to generate LIBs for our flip-flop.
 
 <p align="center">
  <img src="figs/complete_suite_lab4.png" alt="comp_suite"/>
-    <b>
+    <br>
     <em>Fig. 6 - The Complete Cadence Liberate Suite</em>
-    </b>
+    </br>
 </p>
 
 ### LIB Files
@@ -423,16 +419,16 @@ Finally, there are additional things to characterize: power, noise immunity, sig
 
 <p align="center">
  <img src="figs/ccs_lab4.png" alt="ccs"/>
-    <b>
+    <br>
     <em>Fig. 7 - Composite Current Source Model</em>
-    </b>
+    </br>
 </p>
 
 <p align="center">
  <img src="figs/ecsm_lab4.png" alt="ecsm"/>
-    <b>
+    <br>
     <em>Fig. 8 - Effective Current Source Model</em>
-    </b>
+    </br>
 </p>
 
 ### Generating LIBs
@@ -493,10 +489,8 @@ mean (summarizing from the reference manual):
   power consumption. Here, `index_1` is a range of input slews and `index_2` is
   a range of output loads.
 
-
 ***Q9: What is the benefit of specifying min/max transition times? Hint:
 think about signal integrity and crowbar currents.***
-
 
 ***Q10:The template tables are optimized for a `DFFHQNx1_ASAP7_75t_R`
 cell, which is the smallest available D flip-flop. For larger D flip-flops
@@ -582,9 +576,9 @@ your X2Go session, where a lot of the menu text is invisible:
 
 <p align="center">
  <img src="figs/broken_abstract_lab4.png" alt="abs"/>
-    <b>
+    <br>
     <em>Fig. 9 - Incorrectly Displayed Abstract</em>
-    </b>
+    </br>
 </p>
 
 There are 2 possible solutions. The first is to shutdown your existing X2Go
@@ -593,9 +587,9 @@ Windows installer:
 
 <p align="center">
  <img src="figs/x2go_fonts_lab4.png" alt="fonts"/>
-    <b>
+    <br>
     <em>Fig. 10 - Selecting Legacy Fonts in X2Go Installer</em>
-    </b>
+    </br>
 </p>
 
 The other solution is to rely solely on X11 forwarding over an SSH terminal,
