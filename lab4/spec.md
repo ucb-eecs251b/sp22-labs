@@ -56,7 +56,7 @@ We will need to push the decoder through the tools using the Hammer flow.
 Refer to the previous lab for help on how to invoke Hammer. Synthesis,
 PAR, and LVS all need to be run before you can proceed.
 
-Before continuing, examine the `example-vlsi` file more closely. This file 
+Before continuing, examine the `lab4-vlsi` file more closely. This file 
 contains a HammerDriver that extends the base HammerDriver class. This is how 
 the Hammer flow allows for flexibility in the design. If you want to edit the 
 default steps that Hammer runs, you can do it like this. You may add Hammer 
@@ -133,12 +133,14 @@ netlist, run DRC and LVS, and simulate it.
 Start by running the following commands to setup and run Cadence Virtuoso 
 (recommended to run in the `lab4` directory to minimize file clutter).
 You should then see 2 windows, a command intepreter window (CIW) and a Library 
-Manger window, as shown in Figure 2.
+Manager window, as shown in Figure 2.
 
 ```
-source ~eecs251b/sp22-workspace/asap7_virtuoso/sourceme.sh
+cd chipyard/vlsi
+source lab4/inst-env.sh
+cd lab4
 tcsh      # start C shell
-source ~eecs251b/sp22-workspace/asap7PDK_r1p7/cdslib/setup/setup_asap7.csh
+source ~eecs251b/sp22-workspace/asap7/asap7PDK_r1p7/cdslib/setup/setup_asap7.csh
 exit      # exit C shell
 virtuoso &
 ```
