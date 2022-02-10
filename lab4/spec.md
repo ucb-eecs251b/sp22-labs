@@ -627,14 +627,13 @@ Take a look at the toolbar buttons -- these correspond to the steps needed to
 generate an abstract. We are going to go through them from left to right:
 
 1. Click the Library button (looks like a book). Select the Virtuoso library
-   that contains your custom DFF from Lab 3. You should see that the
-   `custom_dff_R` cell appears on the right pane -- click on it. You
-   should also see 1 cell in the `Core` "bin" on the left pane. The bins
-   correspond to the types of cells that the LEF specification defines; for a
-   standard cell that we have it should be in the `Core` bin, but for
-   things like larger IP blocks, you would want them in the `Block` bin.
-   To do this, you would select the cell, go to `Cell` > `Move`, and
-   select the destination bin.
+   that contains your custom DFF. You should see that the `custom_dff_R` cell
+   appears on the right pane -- click on it. You should also see 1 cell in the
+   `Core` "bin" on the left pane. The bins correspond to the types of cells
+   that the LEF specification defines; for a standard cell that we have it
+   should be in the `Core` bin, but for things like larger IP blocks, you would
+   want them in the `Block` bin.  To do this, you would select the cell, go to
+   `Cell` > `Move`, and select the destination bin.
 
 2. Click the Layout button (looks like 2 wires and 2 vias). This is used to
    import a layout from a GDS file, such as if somebody else gave you a
@@ -770,7 +769,7 @@ the window that appears, set the LEF filename to `custom_dff_R.lef` (or
 something else of your choosing). Select 5.8 as the LEF version, then hit OK.
 
 Now, open the LEF you just created alongside the LEF provided in the PDK at
-`~eecs251b/sp22-workspace/asap7libs_24/lef/scaled/asap7sc7p5t_24_R_4x_170912.lef`.
+`~eecs251b/sp22-workspace/asap7/asap7sc7p5t_27/LEF/scaled/asap7sc7p5t_27_R_4x_201211.lef`.
 In the latter file, scroll down to the part that starts with 
 `MACRO DFFHQNx1_ASAP7_75t_R`. As you compare the two files, note that the LEFs
 provided in the PDK have been manually scaled up by 4x in order to get around
