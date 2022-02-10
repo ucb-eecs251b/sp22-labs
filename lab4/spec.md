@@ -336,8 +336,8 @@ the decoder. Make sure to select the CDL we exported earlier as the netlist.
 
 To avoid an LVS error due to substrate pins and power pins being physically
 separate at the standard cell level (this is a hint for the tapcell question),
-you must select an additional option. In the xACT window, select `Options`
-> `Virtual Connect`. Make sure that the `Virtual Connect Nets` box is checked
+you must select an additional option. In the xACT window, select `Options` > 
+`Virtual Connect`. Make sure that the `Virtual Connect Nets` box is checked
 and is set to `Specified Nets`. In the `Specified Nets Name` box make sure that 
 "VDD VSS" is input. If you loaded the runset properly then you will likely not
 need to change anything.
