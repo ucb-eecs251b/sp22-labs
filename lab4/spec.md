@@ -369,7 +369,7 @@ waveforms).***
 
 ****Q9: Compare your setup time result to the timing parameters for
 `DFFHQNx1_ASAP7_75t_R` in
-`~eecs251b/sp22-workspace/asap7/asap7sc7p5t_27/LIB/NLDM/asap7sc7p5t_AO_RVT_TT_nldm_201020.lib.gz`.
+`~eecs251b/sp22-workspace/asap7/asap7sc7p5t_27/LIB/NLDM/asap7sc7p5t_SEQ_RVT_TT_nldm_201020.lib.gz`.
 Copy the entire section of the lib (starting at "timing () {}") that
 corresponds to the setup time and try to guess why it is presented as a look-up
 table instead of a single value without consulting a LIB reference. Tip: you
@@ -387,7 +387,7 @@ minimize overall power consumption. This is all compounded by the fact that
 libraries must be characterized at multiple operating conditions (process,
 voltage, and temperature), which at the very minimum need to support setup and
 hold time calculations.  With ever-increasing complexity and end-applications,
-successively smaller CMOS nodes have required an characterizing an exponentially
+successively smaller CMOS nodes have required characterizing an exponentially
 larger set of cells and operating conditions, as shown in Figure 5.
 
 In the following sections, we will generate Liberty Timing Files (LIBs) and Library Exchange
@@ -462,12 +462,11 @@ Finally, there are additional things to characterize: power, noise immunity, sig
 
 ### Generating LIBs
 
-Notice that there is now a folder called `vlsi/asap7_lib`. Inside, there are a
-few TCL files and a Makefile. Let's go through them one-by-one to see how
-Liberate works in order to characterize the flip-flop we looked at in Lab 3. We
-will also then compare it against the LIB that comes from the PDK, which is
-located at
-`~eecs251b/sp22-workspace/asap7/asap7sc7p5t/LIB/asap7sc7p5t_24_SEQ_RVT_TT.lib`.
+First, navigate to `vlsi/asap7_lib`. Inside, there are a few TCL files and a
+Makefile. Let's go through them one-by-one to see how Liberate works in order
+to characterize our "custom" flip-flop. We will also then compare it against
+the LIB that comes from the PDK, which is located at
+`~eecs251b/sp22-workspace/asap7/asap7sc7p5t_27/LIB/NLDM/asap7sc7p5t_SEQ_RVT_TT_nldm_201020.lib.gz`.
 
 The Makefile is very simple. You can see that `CELL_TYPE` is set to `DFF`,
 which passes `char_DFF.tcl` to the `liberate` command. This TCL file is set up
@@ -749,7 +748,7 @@ generate an abstract. We are going to go through them from left to right:
    for each layer and do a power rail analysis.
   
 7. Finally, click the Verify button (it has a check mark). This step helps you
-   check your abstract against rules and various P\&R tools. Cancel out of this
+   check your abstract against rules and various P&R tools. Cancel out of this
    step, as we will just move onto generating the LEF.
 
 ***Q15: Why do we generally only want to generate pin shapes on metal layers,
@@ -877,7 +876,7 @@ vlsi.technology.extra_libraries:
 
 ## Conclusion
 
-This lab was meant to give a fairly complete introduction to the custom design
+This lab was meant to give a fairly comprehensive overview of the custom design
 flow. You now know how to generate all of the required collateral for the VLSI
 tools for both a standard cell and a bigger custom cell. You learned how to
 use Cadence Abstract Generator (to create the LEF) and Cadence Liberate (to
