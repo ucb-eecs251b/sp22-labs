@@ -429,7 +429,7 @@ Now open the final design in the GUI:
 
 ```
 cd build/lab3/par-rundir
-./generated-scripts/open-chip
+./generated-scripts/open_chip
 ```
 
 Figure 3 shows an example of the Innovus GUI with a routed design. Here you can
