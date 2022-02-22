@@ -526,10 +526,8 @@ cell, which is the smallest available D flip-flop. For larger D flip-flops
 template tables suitable? If not, which tables might we want to change and how?
 To verify your hypothesis, check against the PDK's LIB.***
 
-Now, let's generate the LIB. Copy or symlink the PEX netlists for your
-flip-flop from earlier into this `asap7_lib` folder. There are 3 files you
-need: the ones that end in `.pex.netlist`, `.pex.netlist.pex`, and
-`.pex.netlist.<cellname>.pxi`. Then, run:
+Now, let's generate the LIB. Copy or symlink the PEX netlist for your
+flip-flop from earlier into this `asap7_lib` folder. Then, run:
 
 ```
 make gen-libs
