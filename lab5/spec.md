@@ -28,6 +28,7 @@ changes to your local Chipyard repository.
 ```
 cd chipyard
 git pull
+source scripts/inst-env.sh
 ```
 
 Then, run the flow on the `TinyRocketConfig`. This will take a few hours
@@ -38,6 +39,7 @@ cores. Continue reading through the lab while everything is running.
 
 
 ```
+cd vlsi
 export CONFIG=TinyRocketConfig
 export BINARY=$RISCV/riscv64-unknown-elf/share/riscv-tests/isa/rv64ui-p-simple
 export INPUT_CONFS=lab5/ChipTop.yml
