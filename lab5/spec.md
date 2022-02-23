@@ -156,7 +156,9 @@ supplied by a power and ground network with finite resistance.  Then, draw a
 series of waveforms showing what the voltage on the power and ground nets of
 the inverter would look like driven by a clock signal, with and without
 additional decoupling capacitance. These waveforms should be qualitative--no
-numbers required. Drawings to submit:
+numbers required.*** 
+
+Drawings to submit:
 - Circuit model (label decaps) 
 - Input clock waveform
 - Output waveform 
@@ -165,7 +167,7 @@ numbers required. Drawings to submit:
 - VDD voltage w/o decap 
 - VDD voltage w/ decap 
 - VSS voltage w/o decap 
-- VSS voltage w/ decap***
+- VSS voltage w/ decap
 
 ***Q6: Concisely describe how IR drop and ground bounce as you have drawn above
 can affect the following: gate delay/setup/hold times, setup time margin, and
