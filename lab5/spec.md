@@ -81,7 +81,7 @@ uses the current consumption from power analysis and finds out how much voltage
 is dropped over the power and ground power supply nets due to resistance in the
 power grid (IR drop) and supply/ground bounce from switching events and
 insufficient supply decoupling capacitance. An illustration of a real power
-grid network is shown for one supply in Fig. Fig. 1, indicating how there are
+grid network is shown for one supply in Fig. 1, indicating how there are
 wirebond resistances and inductances, supply grid resistances, and capacitances
 with other supply nets (e.g. ground for a single-supply design like ours). The
 flow we have can also analyze
@@ -94,7 +94,7 @@ There are also advanced tools such as power gating, package/through-silicon via
 (TSV) analysis, "what-if" rail analysis, self-heating, body bias, and ESD
 analysis that we will not explore in this lab. Refer to the Voltus user guide
 at `/share/instsww/cadence/SSV181/doc/voltusUG/voltusUG.pdf` for everything it
-can do. The following is a summary of the of the power and rail analysis flow
+can do. The following is a summary of the power and rail analysis flow
 as implemented in Hammer:
 
 - ***Power Grid Library Generation***: Done in the `init_technology` step, the
@@ -221,7 +221,7 @@ the decap cells' power was also characterized properly?***
 preserve the amount of IR drop if the power strap density had to be cut in
 half. Hint: think floorplan, clocks, etc.***
 
-## Ungraded Extra Analysis
+## Extra Credit
 
 In the interest of time, vector-based dynamic power/rail analysis is excluded
 above. If you would like to try to analyze the power of the `rv64ui-p-simple`
