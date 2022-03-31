@@ -153,8 +153,27 @@ technology specific mapping, with a few attributes set to make it easier to
 perform power analysis given a pre-synthesis stimulus file.
 
 ### Clock Tree Synthesis
+Clock tree synthesis (CTS) is a crucial step in the place-and-route flow that
+builds the clock networks that distribute the clocks across the design. Before
+running CTS, the design's clocks are treated as "ideal" with zero skew from
+endpoint to endpoint. While the network itself may consist of a small number of
+gates relative to the rest of the design, the constant toggling nature of a
+clock means the presence of a non-ideal clock network has a huge impact on
+total power. Joules must build a simple clock tree model to include the power
+dissipated by the clock networks. The below figure illustrates a common strategy
+for clock distribution known as "H-tree clock distribution". This figure was
+taken from [this paper](https://www.researchgate.net/publication/220337855_Clock_Distribution_Networks_with_Gradual_Signal_Transition_Time_Relaxation_for_Reduced_Power_Consumption).
+
+<p align="center">
+ <img src="figs/h_tree.png" alt="h_tree"/>
+    <br><em>Fig. 3 - H-tree clock distribution network</em></br>
+</p>
 
 ### Reporting
+Use 4 frames
+Narrow start-end window to 300ns
+Decrease frame interval to 1ns
+Add in
 
 ## Reference Materials
 ## Conclusion
