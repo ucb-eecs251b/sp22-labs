@@ -41,7 +41,7 @@ source scripts/inst-env.sh
 ## Tutorial Files
 This tutorial uses the same RTL and test verilog files from `vlsi/lab3` to
 perform power estimation on a greatest common denominator (GCD) accelerator
-block. The directory structure, showing only relevant files, for the tutorial
+block. The directory structure for the tutorial, showing only relevant files,
 is shown below:
 
 ```
@@ -219,18 +219,12 @@ further tweaking our `read_stimulus` call in `main.tcl`. The included
 We can further dig into the power profile by exporting the results as cadence's
 proprietary waveform format `.shm`. The below plot shows a snippet of the full simulation
 with 1ns frames for all registers in the design. Notice that this format allows
-us to see the internal, leakage, and switching power separately. 
+us to see the internal, leakage, and switching power separately.
 
 <p align="center">
  <img src="figs/power_profile_shm.png" alt="psimv"/>
     <br><em>Fig. 7 - Power profile by category in simvision</em></br>
 </p>
-
-## Reference Materials
-For more information on Joules and the various features it offers consult the
-following documents:
-- User Guide: `/share/instsww/cadence/JLS191/doc/joules_ug_cui/joules_ug_cui.pdf` 
-- Command Reference: `/share/instsww/cadence/JLS191/doc/joules_cmd_ref_cui/joules_cmd_ref_cui.pdf` 
 
 ## Conclusion
 This tutorial should have given you a brief introduction to Joules and its
@@ -238,3 +232,9 @@ capabilities. Joules supports many other useful features and modes such as
 clock gate insertion, logic gate insertion, DFT insertion, multiple supply
 voltage (MSV), dynamic voltage and frequency scaling (DVFS), and power shutoff
 modeling.
+
+## Reference Materials
+For more information on Joules and the various features it offers consult the
+following documents:
+- User Guide: `/share/instsww/cadence/JLS191/doc/joules_ug_cui/joules_ug_cui.pdf`
+- Command Reference: `/share/instsww/cadence/JLS191/doc/joules_cmd_ref_cui/joules_cmd_ref_cui.pdf`
