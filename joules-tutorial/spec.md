@@ -175,38 +175,66 @@ network. The files `build/joules/clock_tree_summary.txt` and
 `build/joules/clock_tree_1.txt` detail the generated clock network for this
 design.
 
-### Reporting
+### Analysis & Reporting
+
+The `compute_power` tcl command is used to run activity propagation and power
+analysis within Joules. The `plot_power_profile` command can then be used to
+plot the power for the various frames. It's important to note that this
+plotting command only works for time-based analysis. An average power analysis
+will only have a single data point to plot and thus `plot_power_profile` will
+error. It will also error if only 1 frame has been defined (when only 1 frame
+exists then average and time-based analysis is the same). The below figure
+shows the output of `plot_power_profile` for the 4 frames defined in Figure 2.
 
 <p align="center">
  <img src="figs/power_profile_full_4_frames.png" alt="pfull4"/>
     <br><em>Fig. 4 - Power profile for full simulation split into 4 frames</em></br>
 </p>
 
+As the above figure shows, a small number of frames does not give us much
+insight into what is actually happening in the design. It does give us a
+reasonable idea of the average power we should expect for this stimulus. The
+below figure shows the plot for the same stimulus but with 1ns frames instead
+of 4 equally sized frames (the `read_stimulus` command can specify the number
+of frames explicitly or the frame size itself).
+
 <p align="center">
  <img src="figs/power_profile_full_1ns_interval.png" alt="pfull1ns"/>
     <br><em>Fig. 5 - Power profile for full simulation split into 1ns frames</em></br>
 </p>
+
+This plot shows that the simulation seems to stop around 300ns. If we look back
+at the `gcdTestHarness_rtl.v` testbench we can see that there is a long delay
+at the end of the simulation. To get a more realistic stimulus without this
+long period of inactivity, we can change the end time of the stimulus by
+further tweaking our `read_stimulus` call in `main.tcl`. The included
+`main.tcl` already has this change by default. The below plot shows the 0 to
+300ns stimulus power profile with 1ns frame size.
 
 <p align="center">
  <img src="figs/power_profile_0_to_300ns_1ns_interval.png" alt="p3001ns"/>
     <br><em>Fig. 6 - Power profile for 0 to 300ns split into 1ns frames</em></br>
 </p>
 
+We can further dig into the power profile by exporting the results as cadence's
+proprietary waveform format `.shm`. The below plot shows a snippet of the full simulation
+with 1ns frames for all registers in the design. Notice that this format allows
+us to see the internal, leakage, and switching power separately. 
+
 <p align="center">
  <img src="figs/power_profile_shm.png" alt="psimv"/>
     <br><em>Fig. 7 - Power profile by category in simvision</em></br>
 </p>
 
-
-Decrease frame interval to 1ns
-Narrow start-end window to 300ns
-Add in categories
-
 ## Reference Materials
-## Conclusion
-Other things like clock gate insertion, logic gate insertion, DFT insertion,
-CPF flow with MSVs (multiple-supply-voltages), dynamic voltage and frequency scaling, and power
-shutoff modes that. Additionally, clock tree synthesis is generally one of the more complicated
-steps in place-and-route and thus an accurate clock tree model will likely require more
-direction than our simple model in in this example.
+For more information on Joules and the various features it offers consult the
+following documents:
+- User Guide: `/share/instsww/cadence/JLS191/doc/joules_ug_cui/joules_ug_cui.pdf` 
+- Command Reference: `/share/instsww/cadence/JLS191/doc/joules_cmd_ref_cui/joules_cmd_ref_cui.pdf` 
 
+## Conclusion
+This tutorial should have given you a brief introduction to Joules and its
+capabilities. Joules supports many other useful features and modes such as
+clock gate insertion, logic gate insertion, DFT insertion, multiple supply
+voltage (MSV), dynamic voltage and frequency scaling (DVFS), and power shutoff
+modeling.
