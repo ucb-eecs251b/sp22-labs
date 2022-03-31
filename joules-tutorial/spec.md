@@ -115,6 +115,30 @@ intentionally simple and should serve as a starting point for anyone trying to
 make a more complicated Joules flow.
 
 ### Reading Stimuli
+Multiple stimulus files can be read into Joules to perform a number of power
+analyses on the design. We will stick with the single VCD stimulus file that we
+generated earlier to keep the tutorial simple. The `read_stimulus` tcl command
+is used to process stimuli within Joules. The entire simulation contained
+within the VCD file is shown in the figure below:
+
+<p align="center">
+ <img src="figs/sim.png" alt="sim"/>
+    <br><em>Fig. 1 - sim.vcd in GTKWave</em></br>
+</p>
+
+For time-based analysis, as opposed to a simple average analysis, the
+simulation must be split into a series of smaller time units. These time units
+are called "frames" and their value cannot be smaller than the precision of the
+simulation. Joules calculates the average power for each frame and then
+provides easy methods for plotting these results. The below figure shows an
+example of partitioning our VCD stimulus into 4 contiguous frames. Obviously,
+the smaller we make the frames the more insight we will get into the dynamics
+of our design's power draw.
+
+<p align="center">
+ <img src="figs/sim_frames.png" alt="sim"/>
+    <br><em>Fig. 2 - sim.vcd split into 4 frames</em></br>
+</p>
 
 ### Synthesis
 While RTL power estimation sounds nice and easy, the truth is that the power
@@ -123,7 +147,10 @@ will vary dramatically from process to process with the same RTL and thus it's
 imperative that Joules runs some form of technology mapping (i.e. synthesis)
 before performing power analysis.
 
-Synthesis is performed with the `syn_power` tcl command. 
+Synthesis in Joules is performed with the `syn_power` tcl command. This
+performs the same steps as regular synthesis, generic mapping followed by
+technology specific mapping, with a few attributes set to make it easier to
+perform power analysis given a pre-synthesis stimulus file.
 
 ### Clock Tree Synthesis
 
