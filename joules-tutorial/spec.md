@@ -136,7 +136,7 @@ the smaller we make the frames the more insight we will get into the dynamics
 of our design's power draw.
 
 <p align="center">
- <img src="figs/sim_frames.png" alt="sim"/>
+ <img src="figs/sim_frames.png" alt="sim" width="756"/>
     <br><em>Fig. 2 - sim.vcd split into 4 frames</em></br>
 </p>
 
